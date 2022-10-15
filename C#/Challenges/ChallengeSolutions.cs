@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Collections;
 
 namespace TwoSum
 {
@@ -19,7 +20,7 @@ namespace TwoSum
 
             return new int[] { 0, 1 };
         }
-
+        //https://leetcode.com/problems/palindrome-number/
         public static string LongestPalindrome(string s)
         {
             Dictionary<char, int> memo = new();
@@ -76,98 +77,74 @@ namespace TwoSum
 
             return lp;
         }
+        // https://leetcode.com/problems/regular-expression-matching/
+        public static bool IsMatch(string s, string p) {
+            if(p == null || p.Length == 0) return s.Length == 0 || s == null;
 
-        public static bool IsMatch(string s, string p)
-        {
-            var sb = new StringBuilder(s);
-            var tokens = new List<string>();
-            var cp = p.ToCharArray();
-            for (var i = 0; i < cp.Length;)
-            {
-                if (i + 1 < cp.Length && cp[i + 1] == '*')
-                {
-                    tokens.Add(cp[i] + "" + cp[i + 1]);
-                    i += 2;
-                }
-                else
-                {
-                    tokens.Add("" + cp[i]);
-                    i++;
-                }
+            var dp = new bool[s.Length +1, p.Length +1];
+            dp[0,0] = true;
+            for(var j = 2; j<=p.Length; j++) {
+                dp[0,j] = p[j-1] == '*' && dp[0,j-2];
             }
-            var j = 0;
-            foreach (var tok in tokens)
-            {
-                if (j >= sb.Length) return false;
-                var star = tok.Length == 2 && tok[1] == '*' ? true : false;
-                var cm = star ? "" + tok[0] : tok;
-                if (!star)
-                {
-                    if (cm != "." && tok != sb.ToString(j, cm.Length))
-                    {
-                        return false;
-                    }
-
-                    j++;
-                }
-                else
-                {
-                    while (j < sb.Length && (cm == "." || sb[j] + "" == cm))
-                    {
-                        j++;
+            for(var j = 1; j<= p.Length; j++) {
+                for(var i=1; i<=s.Length; i++) {
+                    if(p[j-1] == s[i-1] || p[j-1] == '.') {
+                        dp[i,j] = dp[i-1, j-1];
+                    } else if(p[j-1] == '*') {
+                        dp[i,j] = dp[i, j-2] || ((p[j-2] == s[i-1] || p[j-2] == '.') && dp[i-1, j]);
                     }
                 }
             }
 
-            if (j < sb.Length)
-            {
-                return false;
-            }
-
-            return true;
+            return dp[s.Length, p.Length];
         }
+        // https://leetcode.com/problems/generate-parentheses/
+        public static IList<string> GenerateParenthesis(int n) {
+                var dp = new List<string>[n + 1];
+                dp[0] = new List<string>() {""};
+                dp[1] = new List<string> {"()"};
 
-        public static bool IsMatchDynamic(string s, string p)
-        {
-            var tokens = GetTokens(p);
-            return IsMatchDynamicHelper(s, tokens, 0, 0);
-        }
-        private static bool IsMatchDynamicHelper(string s, List<string> tokens, int i, int j)
-        {
-            for (;i < s.Length || j<tokens.Count; i++)
-            {
-                if (j<tokens.Count)
-                {
-                    if(tokens[j].ElementAtOrDefault(1) ==  '*') {
-                        if (i> s.Length || (tokens[j][0] != s.ElementAtOrDefault(i) && tokens[j][0] != '.')) return IsMatchDynamicHelper(s, tokens, i, j + 1);
-                    } else {
-                        if (tokens[j][0] == s.ElementAtOrDefault(i) || tokens[j][0] == '.') return IsMatchDynamicHelper(s, tokens, i + 1, j + 1);
-                        else return false;
+                if(n < 2) return dp[n];
+
+                for(var i =2; i<=n;i++) {
+                    dp[i] = new List<string>();
+                    for(var j=0;j<i; j++) {
+                      foreach(var x in dp[j]) {
+                        foreach(var y in dp[i-j-1]) {
+                            dp[i].Add($"({x}){y}");
+                        }
+                      }  
                     }
-                } else {
-                    return false;
                 }
-            }
-            return true;
+                Console.WriteLine(dp[n].Count);
+                return dp[n];
         }
-        private static List<string> GetTokens(string p)
-        {
-            var tokens = new List<string>();
-            var cp = p.ToCharArray();
-            for (var i = 0; i < cp.Length;)
-            {
-                if (i + 1 < cp.Length && cp[i + 1] == '*')
-                {
-                    tokens.Add(cp[i] + "" + cp[i + 1]);
-                    i += 2;
+        public static IList<string> GenerateParenthesis2(int n) {
+                var dp = new List<string>[n + 1];
+                dp[0] = new List<string>() {""};
+                dp[1] = new List<string> {"()"};
+
+                if(n < 2) return dp[n];
+                dp[2] = new List<string>() {"(())", "()()"};
+                for(var i =3; i<=n;i++) {
+                    var seen = new Dictionary<string, bool> ();
+                    for(var j = 0; j<dp[i-1].Count; j++) {
+                        seen.TryAdd($"({dp[i-1][j]})", true);
+                        seen.TryAdd(dp[i-1][j]+"()", true);
+                        seen.TryAdd("()"+dp[i-1][j], true);
+                    }
+                    for(var k=2; k<i; k++) {
+                        for(var j = 0; j<dp[k].Count;j++) {
+                            for(var l = 0; l< dp[i-k].Count;l++) {
+                            seen.TryAdd(dp[i-k][l]+dp[k][j], true);
+                            seen.TryAdd(dp[k][j]+dp[i-k][l], true);
+                            }
+                        }
+                    }
+                    dp[i] = seen.Select(x => x.Key).ToList();
                 }
-                else
-                {
-                    tokens.Add("" + cp[i]);
-                    i++;
-                }
-            }
-            return tokens;
+                Console.WriteLine(dp[n].Count);
+                return dp[n];
         }
     }
 }
