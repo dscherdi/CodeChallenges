@@ -1,5 +1,7 @@
 package main
 
+import "math"
+
 // https://leetcode.com/problems/longest-valid-parentheses/
 func longestValidParentheses(str string) int {
 	var ps = make([]int, 0)
@@ -55,15 +57,48 @@ func longestValidParenthesesDynamic(str string) int {
 	return maxans
 }
 
+func trap(height []int) int {
+	if len(height) < 3 {
+		return 0
+	}
 
+	var dp = make([]int, len(height))
+	var s []int
+	dp[0] = 0
+	dp[1] = 0
 
+	for i := 2; i < len(height); i++ {
+		if height[i-1] < height[i] && height[i-1] < height[i-2] {
+			h := height[i]
+			if h > height[i-2] {
+				h = height[i-2]
+			}
+			dp[i] = MaxInt(height[i], height[i-2]) - height[i-1] + dp[i-1]
+		} else {
+			if height[i] > height[i-1] {
 
+			}
+		}
+
+	}
+
+	return dp[len(height)-1]
+}
 
 // Utils
-func MaxInt(x, y int) int {
-	if x < y {
-		return y
-	} else {
-		return x
+func MaxInt(x ...int) int {
+	max := math.MinInt
+	for i := 0; i < len(x); i++ {
+		if x[i] > max {
+			max = x[i]
+		}
+	}
+}
+func MinInt(x ...int) int {
+	max := math.MaxInt
+	for i := 0; i < len(x); i++ {
+		if x[i] > max {
+			max = x[i]
+		}
 	}
 }
