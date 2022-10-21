@@ -57,32 +57,27 @@ func longestValidParenthesesDynamic(str string) int {
 	return maxans
 }
 
+//https://leetcode.com/problems/trapping-rain-water/solution/
 func trap(height []int) int {
 	if len(height) < 3 {
 		return 0
 	}
+	ans := 0
+	var lMax = make([]int, len(height))
+	var rMax = make([]int, len(height))
+	lMax[0] = height[0]
+	rMax[len(height)-1] = height[len(height)-1]
 
-	var dp = make([]int, len(height))
-	var s []int
-	dp[0] = 0
-	dp[1] = 0
-
-	for i := 2; i < len(height); i++ {
-		if height[i-1] < height[i] && height[i-1] < height[i-2] {
-			h := height[i]
-			if h > height[i-2] {
-				h = height[i-2]
-			}
-			dp[i] = MaxInt(height[i], height[i-2]) - height[i-1] + dp[i-1]
-		} else {
-			if height[i] > height[i-1] {
-
-			}
-		}
-
+	for i := 1; i < len(height); i++ {
+		lMax[i] = MaxInt(lMax[i-1], height[i])
 	}
-
-	return dp[len(height)-1]
+	for i := len(height) - 2; i >= 0; i-- {
+		rMax[i] = MaxInt(rMax[i+1], height[i])
+	}
+	for i := 0; i < len(height); i++ {
+		ans += MinInt(lMax[i], rMax[i]) - height[i]
+	}
+	return ans
 }
 
 // Utils
@@ -93,12 +88,14 @@ func MaxInt(x ...int) int {
 			max = x[i]
 		}
 	}
+	return max
 }
 func MinInt(x ...int) int {
-	max := math.MaxInt
+	min := math.MaxInt
 	for i := 0; i < len(x); i++ {
-		if x[i] > max {
-			max = x[i]
+		if x[i] < min {
+			min = x[i]
 		}
 	}
+	return min
 }
