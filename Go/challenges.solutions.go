@@ -57,7 +57,7 @@ func longestValidParenthesesDynamic(str string) int {
 	return maxans
 }
 
-//https://leetcode.com/problems/trapping-rain-water/solution/
+// https://leetcode.com/problems/trapping-rain-water/solution/
 func trap(height []int) int {
 	if len(height) < 3 {
 		return 0
@@ -78,6 +78,25 @@ func trap(height []int) int {
 		ans += MinInt(lMax[i], rMax[i]) - height[i]
 	}
 	return ans
+}
+
+// https://leetcode.com/problems/counting-bits/
+func CountBits(n int) []int {
+	if n == 0 {
+		return []int{0}
+	}
+	dp := make([]int, n+1)
+	dp[0] = 0
+	dp[1] = 1
+	for i := 1; i <= n; i++ {
+		if i&1 == 0 {
+			dp[i] = dp[i/2]
+		} else {
+			dp[i] = dp[i-1] + 1
+		}
+
+	}
+	return dp
 }
 
 // Utils
