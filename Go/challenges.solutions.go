@@ -3,7 +3,7 @@ package main
 import "math"
 
 // https://leetcode.com/problems/longest-valid-parentheses/
-func longestValidParentheses(str string) int {
+func LongestValidParentheses(str string) int {
 	var ps = make([]int, 0)
 	var dp = make([]bool, len(str))
 
@@ -35,7 +35,7 @@ func longestValidParentheses(str string) int {
 	return max
 }
 
-func longestValidParenthesesDynamic(str string) int {
+func LongestValidParenthesesDynamic(str string) int {
 	var dp = make([]int, len(str))
 	maxans := 0
 	for i := 1; i < len(str); i++ {
@@ -58,7 +58,7 @@ func longestValidParenthesesDynamic(str string) int {
 }
 
 // https://leetcode.com/problems/trapping-rain-water/solution/
-func trap(height []int) int {
+func Trap(height []int) int {
 	if len(height) < 3 {
 		return 0
 	}
@@ -97,6 +97,20 @@ func CountBits(n int) []int {
 
 	}
 	return dp
+}
+
+// https://leetcode.com/problems/fibonacci-number/
+func Fib(n int) int {
+	if n < 2 {
+		return n
+	}
+	dp := make([]int, n+1)
+	dp[0] = 0
+	dp[1] = 1
+	for i := 2; i <= n; i++ {
+		dp[i] = dp[i-1] + dp[i-2]
+	}
+	return dp[n]
 }
 
 // Utils
