@@ -113,6 +113,28 @@ func Fib(n int) int {
 	return dp[n]
 }
 
+// https://leetcode.com/problems/pascals-triangle/
+func PascalsTriangle(numRows int) [][]int {
+	if numRows < 2 {
+		return [][]int{{1}}
+	}
+	dp := make([][]int, numRows)
+	dp[0] = []int{1}
+	dp[1] = []int{1, 1}
+
+	for i := 2; i < numRows; i++ {
+		dp[i] = make([]int, i+1)
+		dp[i][0] = 1
+		dp[i][i] = 1
+		for j := 1; j <= i/2; j++ {
+			dp[i][j] = dp[i-1][j] + dp[i-1][j-1]
+			dp[i][i-j] = dp[i][j]
+		}
+	}
+
+	return dp
+}
+
 // Utils
 func MaxInt(x ...int) int {
 	max := math.MinInt
