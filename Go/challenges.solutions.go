@@ -1,6 +1,15 @@
 package main
 
-import "math"
+import (
+	"fmt"
+	"math"
+	"time"
+)
+
+func timeTrack(start time.Time, name string) {
+	elapsed := time.Since(start)
+	fmt.Printf("%s took %s | ", name, elapsed)
+}
 
 // https://leetcode.com/problems/longest-valid-parentheses/
 func LongestValidParentheses(str string) int {
@@ -133,6 +142,43 @@ func PascalsTriangle(numRows int) [][]int {
 	}
 
 	return dp
+}
+
+// https://leetcode.com/problems/n-th-tribonacci-number/
+func Tribonacci(n int) int {
+	if n < 2 {
+		return n
+	}
+	dp := make([]int, n+1)
+	dp[0] = 0
+	dp[1] = 1
+	dp[2] = 1
+	for i := 3; i <= n; i++ {
+		dp[i] = dp[i-1] + dp[i-2] + dp[i-3]
+	}
+	return dp[n]
+}
+
+// https://leetcode.com/problems/min-cost-climbing-stairs/
+func MinCostClimbingStairs(cost []int) int {
+	defer timeTrack(time.Now(), "MinCostClimbingStair1")
+	dp := make([]int, len(cost)+2)
+	dp[len(cost)] = 0
+	dp[len(cost)+1] = 0
+	for i := len(cost) - 1; i > -1; i-- {
+		dp[i] = cost[i] + MinInt(dp[i+1], dp[i+2])
+	}
+	return MinInt(dp[0], dp[1])
+}
+func MinCostClimbingStairs2(cost []int) int {
+	defer timeTrack(time.Now(), "MinCostClimbingStair2")
+	a, b := cost[0], cost[1]
+	for i := 2; i < len(cost); i++ {
+		c := cost[i] + MinInt(a, b)
+		a = b
+		b = c
+	}
+	return MinInt(a, b)
 }
 
 // Utils
