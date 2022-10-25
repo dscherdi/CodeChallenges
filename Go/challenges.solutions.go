@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"math"
+	"math/big"
 	"time"
 )
 
@@ -181,7 +182,70 @@ func MinCostClimbingStairs2(cost []int) int {
 	return MinInt(a, b)
 }
 
+// https://leetcode.com/problems/pascals-triangle-ii/
+func PascalsTriangle2(n int) []int {
+	defer timeTrack(time.Now(), "PascalsTriangle2")
+	if n == 0 {
+		return []int{1}
+	}
+	if n == 1 {
+		return []int{1, 1}
+	}
+	dp := make([]int, n+1)
+	dp[0] = 1
+	dp[n] = 1
+	fn := FactorialBigInt(n)
+	for i := 1; i <= n/2; i++ {
+		r := FactorialBigInt(i)
+		qr := FactorialBigInt(n - i)
+		rec := big.NewInt(1)
+		cqr := rec.Div(fn, r.Mul(r, qr))
+		dp[i] = int(cqr.Uint64())
+		dp[n-i] = dp[i]
+	}
+
+	return dp
+}
+
+func PascalsTriangle2_2(n int) []int {
+	defer timeTrack(time.Now(), "PascalsTriangle2_2")
+	if n == 0 {
+		return []int{1}
+	}
+	if n == 1 {
+		return []int{1, 1}
+	}
+	dp := make([]int, n+1)
+	dp[0] = 1
+	dp[n] = 1
+	up := n
+	down := 1
+	for i := 1; i <= n/2; i++ {
+		dp[i] = dp[i-1] * up / down
+		up--
+		down++
+		dp[n-i] = dp[i]
+	}
+	return dp
+}
+
 // Utils
+func FactorialUInt64(n uint64) uint64 {
+	var p uint64 = 1
+	for i := uint64(1); i <= n; i++ {
+		p *= i
+	}
+	return p
+}
+
+func FactorialBigInt(n int) *big.Int {
+	p := big.NewInt(1)
+
+	for i := int64(1); i <= int64(n); i++ {
+		p = p.Mul(p, big.NewInt(i))
+	}
+	return p
+}
 func MaxInt(x ...int) int {
 	max := math.MinInt
 	for i := 0; i < len(x); i++ {
