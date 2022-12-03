@@ -285,6 +285,43 @@ func ClimbStairs(n int) int {
 	return dp[n-1]
 }
 
+// https://leetcode.com/problems/get-maximum-in-generated-array/
+func GetMaximumGenerated(n int) int {
+	defer timeTrack(time.Now(), "ClimbStairs")
+	if n == 0 {
+		return 0
+	}
+	if n <= 2 {
+		return 1
+	}
+	dp := make([]int, n+1)
+	dp[0] = 0
+	dp[1] = 1
+	max := 0
+	for i := 1; i < (n+1)/2; i++ {
+		m1 := 2 * i
+		m2 := 2*i + 1
+		if m1 <= n {
+			dp[m1] = dp[i]
+			if dp[m1] > max {
+				max = dp[m1]
+			}
+		}
+		if m2 <= n {
+			dp[m2] = dp[i] + dp[i+1]
+			if dp[m2] > max {
+				max = dp[m2]
+			}
+		}
+	}
+	return max
+}
+
+// https://leetcode.com/problems/is-subsequence/
+func IsSubsequence(s string, t string) bool {
+
+}
+
 // Utils
 func FactorialUInt64(n uint64) uint64 {
 	var p uint64 = 1
