@@ -287,7 +287,7 @@ func ClimbStairs(n int) int {
 
 // https://leetcode.com/problems/get-maximum-in-generated-array/
 func GetMaximumGenerated(n int) int {
-	defer timeTrack(time.Now(), "ClimbStairs")
+	defer timeTrack(time.Now(), "GetMaximumGenerated")
 	if n == 0 {
 		return 0
 	}
@@ -319,7 +319,23 @@ func GetMaximumGenerated(n int) int {
 
 // https://leetcode.com/problems/is-subsequence/
 func IsSubsequence(s string, t string) bool {
-
+	defer timeTrack(time.Now(), "IsSubsequence")
+	if len(s) > len(t) {
+		return false
+	}
+	if len(s) == 0 {
+		return true
+	}
+	j := 0
+	for i := 0; i < len(t); i++ {
+		if j >= len(s) {
+			return true
+		}
+		if t[i] == s[j] {
+			j++
+		}
+	}
+	return j == len(s)
 }
 
 // Utils
