@@ -23,5 +23,7 @@ func main() {
 	//fmt.Println(MaxProfit2([]int{7, 1, 5, 3, 6, 4}))
 	//fmt.Println(MaxProfit2([]int{7, 6, 5, 4, 3, 2, 1}))
 	//fmt.Println(MaxProfit2([]int{2, 4, 1}))
-	fmt.Println(GetMaximumGenerated((15)))
+	//fmt.Println(GetMaximumGenerated((15)))
+
+	fmt.Println((MinimumSum(4115)))
 }
