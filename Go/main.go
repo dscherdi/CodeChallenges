@@ -26,4 +26,7 @@ func main() {
 	//fmt.Println(GetMaximumGenerated((15)))
 
 	fmt.Println((MinimumSum(4115)))
+	fmt.Println((MinimumSum(4009)))
+	fmt.Println((MinimumSum(2031)))
+
 }
