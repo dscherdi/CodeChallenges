@@ -330,3 +330,7 @@ func IsSubsequence(s string, t string) bool {
 	}
 	return j == len(s)
 }
+
+func getMinimumDays(parcels []int32) int32 {
+
+}

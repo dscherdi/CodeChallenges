@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 )
 
@@ -60,5 +61,41 @@ func TestTwoSum2(t *testing.T) {
 
 	if fmt.Sprint(r) != fmt.Sprint(exp) {
 		t.Errorf("is %v, should be %v", r, exp)
+	}
+}
+
+func TestMerge(t *testing.T) {
+	nums1 := []int{1, 2, 3, 0, 0, 0}
+	m := 3
+	nums2 := []int{2, 5, 6}
+	n := 3
+
+	merge(nums1, m, nums2, n)
+
+	expected := []int{1, 2, 2, 3, 5, 6}
+	if !reflect.DeepEqual(nums1, expected) {
+		t.Errorf("merge failed: got %v, expected %v", nums1, expected)
+	}
+}
+
+func TestNumDecodings(t *testing.T) {
+	cases := []struct {
+		input string
+		want  int
+	}{
+		{"12", 2},
+		{"226", 3},
+		{"0", 0},
+		{"06", 0},
+		{"10", 1},
+		{"27", 1},
+		{"111111111111111111111111111111111111111111111", 1836311903},
+	}
+
+	for _, c := range cases {
+		got := numDecodings(c.input)
+		if got != c.want {
+			t.Errorf("numDecodings(%q) == %d, want %d", c.input, got, c.want)
+		}
 	}
 }
