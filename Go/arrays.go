@@ -63,7 +63,7 @@ func isValidSudoku(board [][]byte) bool {
 	return true
 }
 
-//https://leetcode.com/explore/interview/card/top-interview-questions-easy/92/array/770/
+// https://leetcode.com/explore/interview/card/top-interview-questions-easy/92/array/770/
 func rotate(matrix [][]int) {
 	defer timeTrack(time.Now(), "rotate image")
 
@@ -644,4 +644,71 @@ func strStr(haystack string, needle string) int {
 	}
 
 	return -1
+}
+
+// https://leetcode.com/problems/text-justification/?envType=study-plan-v2&envId=top-interview-150
+func fullJustify(words []string, maxWidth int) []string {
+	// if a word is 3 chars long and maxWidth is 10 then we need 7 spaces
+	// the next word is 4 chars long and we need 6 spaces
+	// how do we distribute the spaces?
+	// if we use greedy approach, which means we take the solution that is locally optimal with the intent to reach a global optimum
+	// how do we choose which solution ?
+	// how do we select the local optimum ?
+	// greedy implies there are subproblems that are solved by selecting the local optimum choice with the hope that the greater problem reaches the global optimum
+
+	// maxw - len(w)
+	// once we do this for each word we know how many spaces each word needs
+	// the global optimum is to pack as many words in a line while being fully justified
+	// best case we need once space between words
+	// when does need to increase the spaces
+	// we need to increase the number of spaces until we are fully justified
+	// at minimum we need 1 space between words
+	// ex: This is an // is the max of words we can fit in line 1
+	// we are still missing 6 letters which need tobe distributed left and right
+	// how to make it work in an algorithm?
+	// how to split the remaining spaces
+
+	result := make([]string, 0)
+
+	count := 0
+	lineWords := make([]string, 0)
+	for i := 0; i < len(words); {
+		if count+len(words[i])+len(lineWords) <= maxWidth {
+			count += len(words[i])
+			lineWords = append(lineWords, words[i])
+			i++
+		} else {
+
+			// distribute the number of spaces left
+			diff := maxWidth - count
+			spots := len(lineWords) - 1
+			if spots == 0 {
+				lineWords[0] += strings.Repeat(" ", diff)
+			} else {
+				spacePerSpot := diff / spots
+				remainder := diff % spots
+				for j := 1; j < len(lineWords); j++ {
+					lineWords[j] = strings.Repeat(" ", spacePerSpot) + lineWords[j]
+
+				}
+				for j := 1; j < len(lineWords) && remainder > 0; j++ {
+					lineWords[j] = " " + lineWords[j]
+					remainder--
+				}
+			}
+			result = append(result, strings.Join(lineWords, ""))
+			lineWords = make([]string, 0)
+			count = 0
+
+		}
+
+	}
+
+	// last line
+	if len(lineWords) > 0 {
+		lastLine := strings.Join(lineWords, " ")
+		lastLine += strings.Repeat(" ", maxWidth-len(lastLine))
+		result = append(result, lastLine)
+	}
+	return result
 }
