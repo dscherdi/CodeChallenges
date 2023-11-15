@@ -222,46 +222,6 @@ func PascalsTriangle2_2(n int) []int {
 	return dp
 }
 
-// https://leetcode.com/problems/best-time-to-buy-and-sell-stock/
-func MaxProfit(prices []int) int {
-	defer timeTrack(time.Now(), "MaxProfit")
-	if len(prices) < 2 {
-		return 0
-	}
-	minDp := make([]int, len(prices))
-	minDp[0] = prices[0]
-	for i := 1; i < len(prices); i++ {
-		minDp[i] = MinInt(minDp[i-1], prices[i])
-	}
-
-	maxDp := make([]int, len(prices))
-	maxDp[len(prices)-1] = prices[len(prices)-1]
-	for i := len(prices) - 2; i > -1; i-- {
-		maxDp[i] = MaxInt(maxDp[i+1], prices[i])
-	}
-
-	maxReturn := make([]int, len(prices))
-	maxReturn[0] = maxDp[0] - minDp[0]
-	for i := 1; i < len(prices); i++ {
-		maxReturn[i] = MaxInt(maxDp[i]-minDp[i], maxReturn[i-1])
-	}
-
-	return maxReturn[len(prices)-1]
-}
-func MaxProfit2(prices []int) int {
-	defer timeTrack(time.Now(), "MaxProfit2")
-	if len(prices) < 2 {
-		return 0
-	}
-	maxReturn, maxCurr := 0, 0
-	for i := 1; i < len(prices); i++ {
-		maxCurr += prices[i] - prices[i-1]
-		maxCurr = MaxInt(0, maxCurr)
-		maxReturn = MaxInt(maxReturn, maxCurr)
-	}
-	return maxReturn
-}
-
 // https://leetcode.com/problems/climbing-stairs/
 func ClimbStairs(n int) int {
 	defer timeTrack(time.Now(), "ClimbStairs")

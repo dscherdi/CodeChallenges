@@ -25,11 +25,6 @@ func RemoveDuplicates(nums []int) int {
 	return i + 1
 }
 
-// https://leetcode.com/explore/interview/card/top-interview-questions-easy/92/array/564/
-// func MaxProfit(prices []int)  int {
-
-// }
-
 // https://leetcode.com/explore/interview/card/top-interview-questions-easy/92/array/769/
 func isValidSudoku(board [][]byte) bool {
 	defer timeTrack(time.Now(), "isValidSudoku")
