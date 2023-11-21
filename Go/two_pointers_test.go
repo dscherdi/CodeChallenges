@@ -121,3 +121,48 @@ func TestMaxArea(t *testing.T) {
 		})
 	}
 }
+
+func TestThreeSum(t *testing.T) {
+	tests := []struct {
+		name string
+		nums []int
+		want [][]int
+	}{
+		{
+			name: "Test 1",
+			nums: []int{-1, 0, 1, 2, -1, -4},
+			want: [][]int{
+				{-1, -1, 2},
+				{-1, 0, 1},
+			},
+		},
+		{
+			name: "Test 2",
+			nums: []int{},
+			want: [][]int{},
+		},
+		{
+			name: "Test 3",
+			nums: []int{0, 0, 0},
+			want: [][]int{
+				{0, 0, 0},
+			},
+		},
+		{
+			name: "Test 4",
+			nums: []int{-2, 0, 1, 1, 2},
+			want: [][]int{
+				{-2, 0, 2},
+				{-2, 1, 1},
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := threeSum(tt.nums); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("threeSum() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
