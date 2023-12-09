@@ -293,3 +293,48 @@ func gameOfLife(board [][]int) {
 		}
 	}
 }
+
+// https://leetcode.com/problems/set-matrix-zeroes/?envType=study-plan-v2&envId=top-interview-150
+func setZeroes(matrix [][]int) {
+	rowFlag := false
+	colFlag := false
+
+	// check if first row or first column has a zero
+	for i := 0; i < len(matrix); i++ {
+		for j := 0; j < len(matrix[0]); j++ {
+			if i == 0 && matrix[i][j] == 0 {
+				rowFlag = true
+			}
+			if j == 0 && matrix[i][j] == 0 {
+				colFlag = true
+			}
+			if matrix[i][j] == 0 {
+				matrix[0][j] = 0
+				matrix[i][0] = 0
+			}
+		}
+	}
+
+	// use the first row and column as markers
+	for i := 1; i < len(matrix); i++ {
+		for j := 1; j < len(matrix[0]); j++ {
+			if matrix[0][j] == 0 || matrix[i][0] == 0 {
+				matrix[i][j] = 0
+			}
+		}
+	}
+
+	// set first row to zero if needed
+	if rowFlag {
+		for j := 0; j < len(matrix[0]); j++ {
+			matrix[0][j] = 0
+		}
+	}
+
+	// set first column to zero if needed
+	if colFlag {
+		for i := 0; i < len(matrix); i++ {
+			matrix[i][0] = 0
+		}
+	}
+}
