@@ -231,3 +231,51 @@ func setZeroes(matrix [][]int) {
 		}
 	}
 }
+
+// https://leetcode.com/problems/spiral-matrix/?envType=study-plan-v2&envId=top-interview-150
+func spiralOrder(matrix [][]int) []int {
+	if len(matrix) == 0 || len(matrix[0]) == 0 {
+		return []int{}
+	}
+
+	leftToRight, rightToLeft, topToBottom, bottomToTop := "left-to-right", "right-to-left", "top-to-bottom", "bottom-to-top"
+	dirMap := make(map[string][]int)
+
+	dirMap[leftToRight] = []int{0, 1}
+	dirMap[rightToLeft] = []int{0, -1}
+	dirMap[topToBottom] = []int{1, 0}
+	dirMap[bottomToTop] = []int{-1, 0}
+
+	totalElements := len(matrix) * len(matrix[0])
+	x, y := 0, -1 // Start outside the matrix
+	rowLen, colLen := len(matrix), len(matrix[0])
+
+	currDirection := leftToRight
+
+	result := make([]int, 0)
+
+	leftBound, rightBound, topBound, bottomBound := 0, colLen-1, 0, rowLen-1
+
+	for len(result) < totalElements {
+		newX, newY := x+dirMap[currDirection][0], y+dirMap[currDirection][1]
+
+		if currDirection == leftToRight && newY > rightBound {
+			currDirection = topToBottom
+			topBound++
+		} else if currDirection == rightToLeft && newY < leftBound {
+			currDirection = bottomToTop
+			bottomBound--
+		} else if currDirection == topToBottom && newX > bottomBound {
+			currDirection = rightToLeft
+			rightBound--
+		} else if currDirection == bottomToTop && newX < topBound {
+			currDirection = leftToRight
+			leftBound++
+		} else {
+			x, y = newX, newY
+			result = append(result, matrix[x][y])
+		}
+	}
+
+	return result
+}
