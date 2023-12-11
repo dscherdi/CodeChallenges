@@ -181,3 +181,34 @@ func containsNearbyDuplicate(nums []int, k int) bool {
 	return false
 
 }
+
+// https://leetcode.com/problems/longest-consecutive-sequence/?envType=study-plan-v2&envId=top-interview-150
+func longestConsecutive(nums []int) int {
+	m := make(map[int]bool)
+
+	for i := range nums {
+		n := nums[i]
+		m[n] = true
+	}
+
+	max := 0
+
+	for i := range nums {
+		if _, ok := m[nums[i]-1]; !ok {
+			count := 1
+			start := nums[i]
+
+			for m[start+1] {
+				count += 1
+				start += 1
+			}
+
+			if count > max {
+				max = count
+			}
+		}
+
+	}
+
+	return max
+}
