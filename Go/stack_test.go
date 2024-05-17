@@ -45,3 +45,26 @@ func TestProcessPath(t *testing.T) {
 		})
 	}
 }
+
+func TestCalculate(t *testing.T) {
+	testCases := []struct {
+		name     string
+		input    string
+		expected int
+	}{
+		{"single digit", "1", 1},
+		{"simple addition", "1+1", 2},
+		{"simple subtraction", "2-1", 1},
+		{"complex expression", "(1+2)-3", 0},
+		{"expression with spaces", "1 + 2 - 3", 0},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			result := calculate(tc.input)
+			if result != tc.expected {
+				t.Errorf("calculate(%q) = %v; expected %v", tc.input, result, tc.expected)
+			}
+		})
+	}
+}
