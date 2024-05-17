@@ -87,27 +87,39 @@ func maxArea(height []int) int {
 
 // https://leetcode.com/problems/3sum/description/
 func threeSum(nums []int) [][]int {
-	sort.Ints(nums)
 	result := [][]int{}
-	for i := range nums {
-		if i > 0 && nums[i] == nums[i-1] {
-			continue
+
+	m := make(map[int]int)
+
+	for _, v := range nums {
+		m[v]++
+	}
+
+	for i := 0; i < len(nums); i++ {
+		m[nums[i]]--
+		for j := i + 1; j < len(nums); j++ {
+			m[nums[j]]--
+			if m[-nums[i]-nums[j]] > 0 {
+				result = append(result, []int{nums[i], nums[j], -nums[i] - nums[j]})
+			}
+			m[nums[j]]++
 		}
-		l, r := i+1, len(nums)-1
-		for l < r {
-			sum := nums[i] + nums[l] + nums[r]
-			if sum > 0 {
-				r--
-			} else if sum < 0 {
-				l++
-			} else {
-				result = append(result, []int{nums[i], nums[l], nums[r]})
-				l++
-				for l < r && nums[l] == nums[l-1] {
-					l++
-				}
+		m[nums[i]]++
+	}
+
+	for i := 0; i < len(result); i++ {
+		sort.Ints(result[i])
+	}
+
+	for i := 0; i < len(result); i++ {
+		for j := i + 1; j < len(result); j++ {
+			if result[i][0] == result[j][0] && result[i][1] == result[j][1] && result[i][2] == result[j][2] {
+				result = append(result[:j], result[j+1:]...)
+				j--
 			}
 		}
 	}
+
 	return result
+
 }
