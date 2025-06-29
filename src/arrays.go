@@ -608,7 +608,7 @@ func strStr(haystack string, needle string) int {
 		return -1
 	}
 
-	// Preprocessing
+	// Preprocessing - KMT / Tells us how far to jump back in the needle when a mismatch occurs during search
 	f := make([]int, m+1)
 	i, j := 0, -1
 	f[0] = -1
